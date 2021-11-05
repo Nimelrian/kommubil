@@ -19,7 +19,6 @@ private val log = KotlinLogging.logger {}
 class BackendApplication {
     @Bean
     fun runner(repository: MessageRepository) = ApplicationRunner {
-        log.info { "Hello World" }
         repository.deleteAll()
         repository.create(
             Message(
@@ -28,7 +27,6 @@ class BackendApplication {
                 location = Point(51.97604, 7.59637)
             )
         )
-        repository.findAll().forEach(::println)
     }
 
     @Bean
