@@ -11,4 +11,13 @@ class RepositoryMessageService(
     override fun getCurrentMessages(): Set<Message> {
         return repository.findAll().toSet()
     }
+
+    override fun createMessage(command: CreateMessageCommand): Message {
+        val entity = Message(
+            content = command.content,
+            author = command.author,
+            location = command.location
+        )
+        return repository.create(entity)
+    }
 }
