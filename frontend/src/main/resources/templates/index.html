@@ -38,13 +38,16 @@
     fetch("http://localhost:8082/messages")
         .then(response => response.json())
         .then(data => {
-            const {content, author, location: {coordinates: [lat, lng]}} = data;
-            // show a marker on the map
-            //const [lat, lng] = data.location.coordinates;
-            const marker = L.marker({lat, lng}).bindPopup(`${author} says: ${content}`).addTo(map);
-            marker.on("click", function (e) {
-                map.setView(e.latlng, 18);
+            data.forEach(message => {
+                const {content, author, location: {coordinates: [lat, lng]}} = message;
+                // show a marker on the map
+                //const [lat, lng] = data.location.coordinates;
+                const marker = L.marker({lat, lng}).bindPopup(`${author} says: ${content}`).addTo(map);
+                marker.on("click", e => {
+                    map.setView(e.latlng, 18);
+                })
             })
+
         })
 </script>
 </body>

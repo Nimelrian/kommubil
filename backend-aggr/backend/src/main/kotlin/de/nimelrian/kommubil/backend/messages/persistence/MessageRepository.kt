@@ -1,18 +1,14 @@
-package de.nimelrian.kommubil.backend.messages
+package de.nimelrian.kommubil.backend.messages.persistence
 
 import de.nimelrian.kommubil.backend.MessagesTable
+import de.nimelrian.kommubil.backend.common.persistence.CrudRepository
+import de.nimelrian.kommubil.backend.messages.model.Message
 import org.jetbrains.exposed.sql.deleteAll
 import org.jetbrains.exposed.sql.insertAndGetId
 import org.jetbrains.exposed.sql.selectAll
 import org.springframework.stereotype.Repository
 import org.springframework.transaction.annotation.Transactional
 import java.util.*
-
-interface CrudRepository<Model, Key> {
-    fun create(m: Model): Model
-    fun findAll(): Iterable<Model>
-    fun deleteAll(): Int
-}
 
 interface MessageRepository : CrudRepository<Message, UUID>
 

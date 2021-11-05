@@ -3,8 +3,8 @@ package de.nimelrian.kommubil.backend
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.KotlinModule
-import de.nimelrian.kommubil.backend.messages.Message
-import de.nimelrian.kommubil.backend.messages.MessageRepository
+import de.nimelrian.kommubil.backend.messages.model.Message
+import de.nimelrian.kommubil.backend.messages.persistence.MessageRepository
 import mu.KotlinLogging
 import org.postgis.Point
 import org.postgis.geojson.PostGISModule
@@ -26,7 +26,6 @@ class BackendApplication {
                 content = "Hello World",
                 author = "Nimelrian",
                 location = Point(51.97604, 7.59637)
-
             )
         )
         repository.findAll().forEach(::println)
