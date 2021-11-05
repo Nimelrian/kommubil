@@ -71,8 +71,8 @@
         </dependency>
         <dependency>
             <groupId>de.nimelrian</groupId>
-            <artifactId>postgis-geojson</artifactId>
-            <version>0.1</version>
+            <artifactId>jackson-datatype-postgis</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.module</groupId>

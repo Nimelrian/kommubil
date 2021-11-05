@@ -13,7 +13,7 @@
     <modules>
         <module>backend-aggr</module>
         <module>frontend</module>
-        <module>postgis-geojson</module>
+        <module>jackson-datatype-postgis</module>
     </modules>
 
 </project>

@@ -3,11 +3,11 @@ package de.nimelrian.kommubil.backend
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.KotlinModule
+import de.nimelrian.jackson.datatype.postgis.postGisModule
 import de.nimelrian.kommubil.backend.messages.model.Message
 import de.nimelrian.kommubil.backend.messages.persistence.MessageRepository
 import mu.KotlinLogging
 import org.postgis.Point
-import org.postgis.geojson.PostGISModule
 import org.springframework.boot.ApplicationRunner
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
@@ -34,7 +34,7 @@ class BackendApplication {
 
         return ObjectMapper().registerModules(
             KotlinModule(),
-            PostGISModule()
+            postGisModule()
         )
     }
 }
