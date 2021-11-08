@@ -14,6 +14,8 @@
         <module>backend-aggr</module>
         <module>frontend</module>
         <module>jackson-datatype-postgis</module>
+        <module>bus-location-source</module>
+        <module>bus-location-logger</module>
     </modules>
 
 </project>
