@@ -24,7 +24,7 @@ class BackendApplication {
             Message(
                 content = "Hello World",
                 author = "Nimelrian",
-                location = Point(51.97604, 7.59637)
+                location = Point(7.59637, 51.97604)
             )
         )
     }

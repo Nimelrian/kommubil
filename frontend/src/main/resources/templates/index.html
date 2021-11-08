@@ -39,7 +39,7 @@
         .then(response => response.json())
         .then(data => {
             data.forEach(message => {
-                const {content, author, location: {coordinates: [lat, lng]}} = message;
+                const {content, author, location: {coordinates: [lng, lat]}} = message;
                 // show a marker on the map
                 //const [lat, lng] = data.location.coordinates;
                 const marker = L.marker({lat, lng}).bindPopup(`${author} says: ${content}`).addTo(map);
