@@ -1,38 +1,53 @@
 package de.nimelrian.kommubil.buslocationsource
 
-import org.springframework.beans.factory.annotation.Autowired
+import mu.KotlinLogging
+import org.springframework.beans.factory.DisposableBean
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.cloud.function.context.PollableBean
-import org.springframework.cloud.stream.messaging.Sink
 import org.springframework.context.annotation.Bean
+import org.springframework.stereotype.Component
 import org.springframework.web.reactive.socket.client.ReactorNettyWebSocketClient
-import reactor.core.publisher.DirectProcessor
+import reactor.core.Disposable
 import reactor.core.publisher.Flux
-import reactor.core.publisher.Mono
 import reactor.core.publisher.Sinks
 import java.net.URI
 import java.util.function.Supplier
 
-@SpringBootApplication
-class BusLocationSourceApplication {
-    val messages: Flux<String> = run {
-        val sink = Sinks.many().unicast().onBackpressureBuffer<String>()
+
+private val log = KotlinLogging.logger {}
+
+@Component
+class WebSocketSession(val websocketPayloads: Sinks.Many<String>) : DisposableBean {
+    private val socketSubscription: Disposable
+
+    init {
         val client = ReactorNettyWebSocketClient()
         val webSocketUri = URI.create("wss://websocket.busradar.conterra.de")
-        client.execute(webSocketUri) { session ->
+
+        socketSubscription = client.execute(webSocketUri) { session ->
             session.receive()
-                .doOnEach { message -> sink.tryEmitNext(message.get()!!.payloadAsText) }
+                .doOnEach { message ->
+                    message.get()?.let { websocketPayloads.tryEmitNext(it.payloadAsText) }
+                }
                 .then()
         }.subscribe()
-        sink.asFlux()
     }
 
+    override fun destroy() {
+        log.info { "Closing websocket" }
+        socketSubscription.dispose()
+    }
+}
 
+@SpringBootApplication
+class BusLocationSourceApplication {
+    @Bean
+    fun websocketPayloads(): Sinks.Many<String> = Sinks.many().unicast().onBackpressureBuffer()
 
     @PollableBean
-    fun locationSupplier() = Supplier<Flux<String>> {
-        messages
+    fun locationSupplier(websocketPayloads: Sinks.Many<String>) = Supplier<Flux<String>> {
+        websocketPayloads.asFlux()
     }
 }
 
