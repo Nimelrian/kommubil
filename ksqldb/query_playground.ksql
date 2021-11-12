@@ -1,0 +1,20 @@
+CREATE
+or replace STREAM busLocations(
+    features ARRAY<
+        STRUCT<
+            geometry STRUCT<
+                coordinates ARRAY<DOUBLE>
+            >,
+            `properties` STRUCT<
+                fahrzeugid VARCHAR
+            >
+        >
+    >
+) WITH (
+    kafka_topic = 'bus-location',
+    partitions = 1,
+    value_format = 'json'
+);
+
+select explode(features)
+from busLocations emit changes;
